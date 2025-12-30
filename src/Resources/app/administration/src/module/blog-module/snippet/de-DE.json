@@ -13,11 +13,18 @@
             "buttonAddBlogEntry": "Blog Eintrag erstellen",
             "buttonSponsor": "Entwicklung unterstützen",
             "messageEmpty": "Keine Einträge vorhanden",
+            "buttonDuplicate": "Duplizieren",
+            "contextMenuDuplicate": "Duplizieren",
+            "notification": {
+                "duplicateSuccess": "Blog Eintrag \"{title}\" wurde erfolgreich dupliziert.",
+                "duplicateError": "Fehler beim Duplizieren des Blog Eintrags."
+            },
             "table": {
                 "title": "Titel",
                 "active": "Aktiv",
                 "author": "Autor",
-                "publishedAt": "Veröffentlicht am"
+                "publishedAt": "Veröffentlicht am",
+                "actions": "Aktionen"
             }
         },
         "detail": {

@@ -13,11 +13,18 @@
             "buttonAddBlogEntry": "Create blog entry",
             "buttonSponsor": "Support development",
             "messageEmpty": "No blog entries ...",
+            "buttonDuplicate": "Duplicate",
+            "contextMenuDuplicate": "Duplicate",
+            "notification": {
+                "duplicateSuccess": "Blog entry \"{title}\" has been successfully duplicated.",
+                "duplicateError": "Error duplicating blog entry."
+            },
             "table": {
                 "title": "Title",
                 "active": "Active",
                 "author": "Author",
-                "publishedAt": "Published at"
+                "publishedAt": "Published at",
+                "actions": "Actions"
             }
         },
         "detail": {
