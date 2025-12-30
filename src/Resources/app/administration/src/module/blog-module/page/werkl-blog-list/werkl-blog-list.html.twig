@@ -18,6 +18,18 @@
         <sw-language-switch @on-change="changeLanguage" />
     </template>
 
+    {% block werkl_blog_list_search %}
+    <template #search-bar>
+        <sw-simple-search-field
+            v-model:value="term"
+            variant="inverted"
+            size="small"
+            :placeholder="$tc('werkl-blog.general.placeholderSearchBar')"
+            @update:value="onSearch"
+        />
+    </template>
+    {% endblock %}
+
     {% block werkl_blog_list_smart_bar_actions %}
     <template #smart-bar-actions>
         {% block werkl_blog_list_smart_bar_actions_add %}

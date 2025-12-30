@@ -21,6 +21,7 @@ export default {
             total: 0,
             isLoading: true,
             currentLanguageId: Shopware.Context.api.languageId,
+            term: '',
         };
     },
 
@@ -89,6 +90,11 @@ export default {
             }
         },
 
+        onSearch(term) {
+            this.term = term;
+            this.getList();
+        },
+
         getList() {
             this.isLoading = true;
             const criteria = new Criteria(this.page, this.limit);
@@ -101,6 +107,11 @@ export default {
             if (this.categoryId) {
                 criteria.addFilter(Criteria.equals('blogCategories.id', this.categoryId));
             }
+
+            if (this.term) {
+                criteria.setTerm(this.term);
+            }
+
             return this.blogEntryRepository.search(criteria, Shopware.Context.api).then((result) => {
                 this.total = result.total;
                 this.blogEntries = result;
