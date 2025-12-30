@@ -122,7 +122,7 @@ export default {
 
             try {
                 // Create criteria to load the full blog entry with all associations
-                const criteria = new Criteria(1, 1);
+                const criteria = new Criteria();
                 const sortCriteria = Criteria.sort('position', 'ASC', true);
 
                 criteria
