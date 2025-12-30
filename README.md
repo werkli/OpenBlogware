@@ -51,6 +51,25 @@ where you can also select from all available variables.
 ![](https://res.cloudinary.com/dtgdh7noz/image/upload/v1602580850/Bildschirmfoto_2020-10-13_um_12.20.25_xxnrro.png)
 *SEO URL template*
 
+#### Custom Blog URL Prefix
+You can now customize the URL prefix for your blog detail pages. Instead of the default "blog" prefix, 
+you can set any custom prefix (e.g., "beauty-blog", "news", "articles") in the plugin configuration:
+
+1. Navigate to **Settings → System → OpenBlogware**
+2. Find the **"Blog URL prefix"** field in the "SEO Meta Configuration" section
+3. Enter your desired prefix (e.g., "beauty-blog")
+4. Save the configuration
+
+When you change the prefix, all existing blog SEO URLs are automatically regenerated. This is particularly 
+useful for:
+- Maintaining existing URL structure when migrating from other platforms
+- SEO optimization with brand-specific URLs
+- Multi-language sites with different prefixes
+
+**Example:**
+- Default: `blog/category-name/my-post`
+- Custom: `beauty-blog/category-name/my-post`
+
 ## RSS Feed
 For access **RSS Feed** url you can use this path `/blog/rss`
 Example(`http://Your-domain/blog/rss`)

@@ -1,3 +1,8 @@
+# Unreleased
+- Added configurable blog URL prefix to allow customization of blog detail URLs (e.g., from "blog/..." to "beauty-blog/...")
+- SEO URLs are automatically regenerated when the prefix is changed
+- Default prefix remains "blog" for backward compatibility
+
 # 5.0.2
 - Compatibility with Shopware 6.7.5.0
 

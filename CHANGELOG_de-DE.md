@@ -1,3 +1,8 @@
+# Unveröffentlicht
+- Konfigurierbares Blog-URL-Präfix hinzugefügt, um Blog-Detail-URLs anzupassen (z. B. von "blog/..." zu "beauty-blog/...")
+- SEO-URLs werden automatisch neu generiert, wenn das Präfix geändert wird
+- Standard-Präfix bleibt "blog" für Abwärtskompatibilität
+
 # 5.0.2
 - Kompatibilität mit Shopware 6.7.5.0
 
