@@ -37,7 +37,7 @@ class BlogSeoUrlRoute implements SeoUrlRouteInterface
     private function getTemplate(): string
     {
         $prefix = $this->systemConfigService->getString('WerklOpenBlogware.config.blogUrlPrefix');
-        if (empty($prefix)) {
+        if ($prefix === null || $prefix === '') {
             $prefix = 'blog';
         }
 

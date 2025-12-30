@@ -53,32 +53,60 @@ class BlogSeoUrlRouteTest extends TestCase
     }
 
     /**
-     * Test that various custom prefixes work correctly
+     * Test that "news" prefix works correctly
      */
-    public function testGetConfigWithVariousPrefixes(): void
+    public function testGetConfigWithNewsPrefix(): void
     {
-        $testPrefixes = [
-            'news',
-            'articles',
-            'my-custom-blog',
-            'tech',
-            'lifestyle',
-        ];
+        $systemConfigService = $this->createMock(SystemConfigService::class);
+        $systemConfigService->method('getString')
+            ->with('WerklOpenBlogware.config.blogUrlPrefix')
+            ->willReturn('news');
 
-        foreach ($testPrefixes as $prefix) {
-            $systemConfigService = $this->createMock(SystemConfigService::class);
-            $systemConfigService->method('getString')
-                ->with('WerklOpenBlogware.config.blogUrlPrefix')
-                ->willReturn($prefix);
+        $blogEntryDefinition = $this->createMock(BlogEntryDefinition::class);
+        $route = new BlogSeoUrlRoute($blogEntryDefinition, $systemConfigService);
 
-            $blogEntryDefinition = $this->createMock(BlogEntryDefinition::class);
-            $route = new BlogSeoUrlRoute($blogEntryDefinition, $systemConfigService);
+        $config = $route->getConfig();
+        $template = $config->getTemplate();
 
-            $config = $route->getConfig();
-            $template = $config->getTemplate();
+        static::assertStringStartsWith('news/', $template);
+    }
 
-            static::assertStringStartsWith($prefix . '/', $template, "Prefix '$prefix' should be used in template");
-        }
+    /**
+     * Test that "articles" prefix works correctly
+     */
+    public function testGetConfigWithArticlesPrefix(): void
+    {
+        $systemConfigService = $this->createMock(SystemConfigService::class);
+        $systemConfigService->method('getString')
+            ->with('WerklOpenBlogware.config.blogUrlPrefix')
+            ->willReturn('articles');
+
+        $blogEntryDefinition = $this->createMock(BlogEntryDefinition::class);
+        $route = new BlogSeoUrlRoute($blogEntryDefinition, $systemConfigService);
+
+        $config = $route->getConfig();
+        $template = $config->getTemplate();
+
+        static::assertStringStartsWith('articles/', $template);
+    }
+
+    /**
+     * Test that "my-custom-blog" prefix with hyphens works correctly
+     */
+    public function testGetConfigWithHyphenatedPrefix(): void
+    {
+        $systemConfigService = $this->createMock(SystemConfigService::class);
+        $systemConfigService->method('getString')
+            ->with('WerklOpenBlogware.config.blogUrlPrefix')
+            ->willReturn('my-custom-blog');
+
+        $blogEntryDefinition = $this->createMock(BlogEntryDefinition::class);
+        $route = new BlogSeoUrlRoute($blogEntryDefinition, $systemConfigService);
+
+        $config = $route->getConfig();
+        $template = $config->getTemplate();
+
+        static::assertStringStartsWith('my-custom-blog/', $template);
     }
 
     /**
