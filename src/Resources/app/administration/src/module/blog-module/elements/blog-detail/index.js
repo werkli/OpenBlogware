@@ -23,5 +23,13 @@ Shopware.Service('cmsService').registerCmsElement({
             source: 'static',
             value: false,
         },
+        showBackButton: {
+            source: 'static',
+            value: false,
+        },
+        backButtonUrl: {
+            source: 'static',
+            value: '',
+        },
     },
 });

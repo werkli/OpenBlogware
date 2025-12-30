@@ -33,5 +33,32 @@
     </sw-card>
     {% endblock %}
 
+    {% block werkl_cms_element_blog_detail_config_back_button %}
+    <sw-card
+        :title="$tc('werkl-blog.elements.blogDetail.config.backButton.label')"
+        :hero="false"
+        :isLoading="false"
+        :large="false"
+        class="werkl-cms-el-config-blog-detail-back-button">
+
+        {% block werkl_cms_element_blog_detail_config_back_button_show %}
+        <mt-checkbox
+            v-model:checked="element.config.showBackButton.value"
+            :label="$tc('werkl-blog.elements.blogDetail.config.backButton.showBackButton')"
+        />
+        {% endblock %}
+
+        {% block werkl_cms_element_blog_detail_config_back_button_url %}
+        <mt-text-field
+            v-model:value="element.config.backButtonUrl.value"
+            :label="$tc('werkl-blog.elements.blogDetail.config.backButton.backButtonUrl')"
+            :placeholder="$tc('werkl-blog.elements.blogDetail.config.backButton.backButtonUrlPlaceholder')"
+            :disabled="!element.config.showBackButton.value"
+        />
+        {% endblock %}
+
+    </sw-card>
+    {% endblock %}
+
 </div>
 {% endblock %}

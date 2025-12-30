@@ -148,6 +148,12 @@
                         "showAuthor": "Show author",
                         "showCategory": "Show category",
                         "fullWidth": "Full width"
+                    },
+                    "backButton": {
+                        "label": "Back to listing button",
+                        "showBackButton": "Show \"Back to listing\" button",
+                        "backButtonUrl": "Listing page URL",
+                        "backButtonUrlPlaceholder": "e.g. /blog - leave empty for browser history.back()"
                     }
                 },
                 "component": {

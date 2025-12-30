@@ -1,5 +1,24 @@
 {% block werkl_blog_detail %}
     {% if element.data %}
+        {% set showBackButton = element.fieldConfig.elements.showBackButton.value ?? element.config.showBackButton.value %}
+        {% set backButtonUrl = element.fieldConfig.elements.backButtonUrl.value ?? element.config.backButtonUrl.value %}
+        
+        {% block werkl_blog_detail_back_button %}
+            {% if showBackButton %}
+                <div class="werkl-blog-detail-back-button mb-3">
+                    {% if backButtonUrl %}
+                        <a href="{{ backButtonUrl }}" class="btn btn-secondary">
+                            {{ 'werkl-blog.detail.backButton.text'|trans }}
+                        </a>
+                    {% else %}
+                        <a href="javascript:history.back()" class="btn btn-secondary">
+                            {{ 'werkl-blog.detail.backButton.text'|trans }}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endblock %}
+
         <article class="werkl-blog-detail row"
                  itemprop="article"
                  itemscope

@@ -4,6 +4,9 @@
             "meta": {
                 "author": "Autor",
                 "category": "Kategorien"
+            },
+            "backButton": {
+                "text": "Zurück zum Listing"
             }
         },
         "element": {
