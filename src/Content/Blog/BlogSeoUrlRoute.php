@@ -9,24 +9,40 @@ use Shopware\Core\Content\Seo\SeoUrlRoute\SeoUrlRouteInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
+use Shopware\Core\System\SystemConfig\SystemConfigService;
 
 class BlogSeoUrlRoute implements SeoUrlRouteInterface
 {
     public const ROUTE_NAME = 'werkl.frontend.blog.detail';
     public const DEFAULT_TEMPLATE = 'blog/{{ entry.blogCategories.first.translated.name|lower }}/{{ entry.translated.slug|lower }}';
 
-    public function __construct(private readonly BlogEntryDefinition $blogEntryDefinition)
-    {
+    public function __construct(
+        private readonly BlogEntryDefinition $blogEntryDefinition,
+        private readonly SystemConfigService $systemConfigService
+    ) {
     }
 
     public function getConfig(): SeoUrlRouteConfig
     {
+        $template = $this->getTemplate();
+
         return new SeoUrlRouteConfig(
             $this->blogEntryDefinition,
             self::ROUTE_NAME,
-            self::DEFAULT_TEMPLATE,
+            $template,
             true
         );
+    }
+
+    private function getTemplate(): string
+    {
+        $prefix = $this->systemConfigService->getString('WerklOpenBlogware.config.blogUrlPrefix');
+        if (empty($prefix)) {
+            $prefix = 'blog';
+        }
+
+        // Use the configured prefix instead of hardcoded "blog"
+        return $prefix . '/{{ entry.blogCategories.first.translated.name|lower }}/{{ entry.translated.slug|lower }}';
     }
 
     public function prepareCriteria(Criteria $criteria, SalesChannelEntity $salesChannel): void

@@ -16,6 +16,15 @@
         <title>SEO Meta Configuration</title>
         <title lang="de-DE">SEO Metakonfiguration</title>
 
+        <input-field type="text">
+            <name>blogUrlPrefix</name>
+            <label>Blog URL prefix (e.g., "blog", "news", "beauty-blog")</label>
+            <label lang="de-DE">Blog URL Präfix (z. B. "blog", "news", "beauty-blog")</label>
+            <defaultValue>blog</defaultValue>
+            <helpText>The prefix used in blog detail URLs. Change this to customize your blog URLs (e.g., from "blog/my-post" to "beauty-blog/my-post"). After changing this value, the SEO URLs will be regenerated automatically.</helpText>
+            <helpText lang="de-DE">Das Präfix für Blog-Detail-URLs. Ändern Sie dies, um Ihre Blog-URLs anzupassen (z. B. von "blog/mein-beitrag" zu "beauty-blog/mein-beitrag"). Nach der Änderung werden die SEO-URLs automatisch neu generiert.</helpText>
+        </input-field>
+
         <input-field type="int">
             <name>maximumMetaTitleCharacter</name>
             <label>Maximum meta title characters</label>

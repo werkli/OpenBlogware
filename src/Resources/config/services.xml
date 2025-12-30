@@ -127,6 +127,7 @@
 
         <service id="Werkl\OpenBlogware\Content\Blog\BlogSeoUrlRoute">
             <argument type="service" id="Werkl\OpenBlogware\Content\Blog\BlogEntryDefinition"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
 
             <tag name="shopware.seo_url.route"/>
         </service>

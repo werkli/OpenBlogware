@@ -66,6 +66,9 @@ class BlogCacheInvalidSubscriber implements EventSubscriberInterface
             SeoEvents::SEO_URL_TEMPLATE_WRITTEN_EVENT => [
                 ['updateSeoUrlForAllArticles', 10],
             ],
+            'system_config.written' => [
+                ['onSystemConfigChanged', 10],
+            ],
         ];
     }
 
@@ -145,6 +148,36 @@ class BlogCacheInvalidSubscriber implements EventSubscriberInterface
         $ids = $this->blogRepository->searchIds(new Criteria(), $context)->getIds();
 
         $this->seoUrlUpdater->update(BlogSeoUrlRoute::ROUTE_NAME, $ids);
+    }
+
+    /**
+     * When the blog URL prefix configuration changes, regenerate all blog SEO URLs
+     */
+    public function onSystemConfigChanged(EntityWrittenEvent $event): void
+    {
+        $context = $event->getContext();
+
+        // Check if any of the written config keys is the blogUrlPrefix
+        $payloads = $event->getPayloads();
+        $needsUpdate = false;
+
+        foreach ($payloads as $payload) {
+            if (isset($payload['configurationKey']) && $payload['configurationKey'] === 'WerklOpenBlogware.config.blogUrlPrefix') {
+                $needsUpdate = true;
+                break;
+            }
+        }
+
+        if (!$needsUpdate) {
+            return;
+        }
+
+        /** @var list<string> $ids */
+        $ids = $this->blogRepository->searchIds(new Criteria(), $context)->getIds();
+
+        $this->seoUrlUpdater->update(BlogSeoUrlRoute::ROUTE_NAME, $ids);
+        $this->invalidateCache($ids);
+        $this->invalidateCacheCategory($context);
     }
 
     /**
