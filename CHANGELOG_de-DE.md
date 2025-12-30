@@ -1,3 +1,6 @@
+# 5.1.0
+- Blog-Eintrags-Slug für SEO-Optimierung bearbeitbar gemacht [#30](https://github.com/Werkstattl/OpenBlogware/issues/30)
+
 # 5.0.2
 - Kompatibilität mit Shopware 6.7.5.0
 

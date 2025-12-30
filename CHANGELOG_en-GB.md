@@ -1,3 +1,6 @@
+# 5.1.0
+- Make blog entry slug editable for SEO optimization [#30](https://github.com/Werkstattl/OpenBlogware/issues/30)
+
 # 5.0.2
 - Compatibility with Shopware 6.7.5.0
 
