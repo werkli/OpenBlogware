@@ -157,54 +157,35 @@ export default {
                     newCmsPage.locked = originalPage.locked;
                     newCmsPage.config = cloneDeep(originalPage.config);
 
-                    // Deep copy sections, blocks, and slots
-                    if (originalPage.sections) {
-                        newCmsPage.sections = originalPage.sections.map(section => {
-                            const newSection = this.pageRepository.create().sections.create();
-                            newSection.type = section.type;
-                            newSection.sizingMode = section.sizingMode;
-                            newSection.mobileBehavior = section.mobileBehavior;
-                            newSection.backgroundColor = section.backgroundColor;
-                            newSection.backgroundMediaId = section.backgroundMediaId;
-                            newSection.backgroundMediaMode = section.backgroundMediaMode;
-                            newSection.cssClass = section.cssClass;
-                            newSection.position = section.position;
-                            newSection.visibility = cloneDeep(section.visibility);
-
+                    // Deep copy sections - use cloneDeep and then assign new IDs
+                    if (originalPage.sections && originalPage.sections.length > 0) {
+                        const clonedSections = cloneDeep(originalPage.sections);
+                        newCmsPage.sections = clonedSections.map(section => {
+                            // Remove the ID so Shopware creates a new one
+                            delete section.id;
+                            delete section.cmsPageId;
+                            delete section.versionId;
+                            
                             if (section.blocks) {
-                                newSection.blocks = section.blocks.map(block => {
-                                    const newBlock = newSection.blocks.create();
-                                    newBlock.type = block.type;
-                                    newBlock.position = block.position;
-                                    newBlock.locked = block.locked;
-                                    newBlock.name = block.name;
-                                    newBlock.sectionPosition = block.sectionPosition;
-                                    newBlock.marginTop = block.marginTop;
-                                    newBlock.marginBottom = block.marginBottom;
-                                    newBlock.marginLeft = block.marginLeft;
-                                    newBlock.marginRight = block.marginRight;
-                                    newBlock.backgroundColor = block.backgroundColor;
-                                    newBlock.backgroundMediaId = block.backgroundMediaId;
-                                    newBlock.backgroundMediaMode = block.backgroundMediaMode;
-                                    newBlock.cssClass = block.cssClass;
-                                    newBlock.visibility = cloneDeep(block.visibility);
-
+                                section.blocks = section.blocks.map(block => {
+                                    delete block.id;
+                                    delete block.sectionId;
+                                    delete block.versionId;
+                                    
                                     if (block.slots) {
-                                        newBlock.slots = block.slots.map(slot => {
-                                            const newSlot = newBlock.slots.create();
-                                            newSlot.type = slot.type;
-                                            newSlot.slot = slot.slot;
-                                            newSlot.locked = slot.locked;
-                                            newSlot.config = cloneDeep(slot.config);
-                                            return newSlot;
+                                        block.slots = block.slots.map(slot => {
+                                            delete slot.id;
+                                            delete slot.blockId;
+                                            delete slot.versionId;
+                                            return slot;
                                         });
                                     }
-
-                                    return newBlock;
+                                    
+                                    return block;
                                 });
                             }
-
-                            return newSection;
+                            
+                            return section;
                         });
                     }
 
@@ -222,7 +203,7 @@ export default {
                 newBlogEntry.metaTitle = fullBlogEntry.metaTitle;
                 newBlogEntry.metaDescription = fullBlogEntry.metaDescription;
                 newBlogEntry.authorId = fullBlogEntry.authorId;
-                newBlogEntry.publishedAt = new Date(); // Set to current date
+                newBlogEntry.publishedAt = null; // Set to null for inactive entry
                 newBlogEntry.active = false; // Set as inactive by default
                 newBlogEntry.detailTeaserImage = fullBlogEntry.detailTeaserImage;
                 newBlogEntry.mediaId = fullBlogEntry.mediaId;
