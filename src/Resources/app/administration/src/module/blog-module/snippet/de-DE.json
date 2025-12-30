@@ -153,7 +153,8 @@
                         "label": "Zurück zum Listing Button",
                         "showBackButton": "Zeige \"Zurück zum Listing\" Button",
                         "backButtonUrl": "Listing-Seiten URL",
-                        "backButtonUrlPlaceholder": "z.B. /blog - leer lassen für browser history.back()"
+                        "backButtonUrlPlaceholder": "z.B. /blog - leer lassen für browser history.back()",
+                        "backButtonUrlHelp": "Nur verfügbar wenn der \"Zurück zum Listing\" Button aktiviert ist"
                     }
                 },
                 "component": {

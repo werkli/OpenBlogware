@@ -53,6 +53,7 @@
             v-model:value="element.config.backButtonUrl.value"
             :label="$tc('werkl-blog.elements.blogDetail.config.backButton.backButtonUrl')"
             :placeholder="$tc('werkl-blog.elements.blogDetail.config.backButton.backButtonUrlPlaceholder')"
+            :helpText="$tc('werkl-blog.elements.blogDetail.config.backButton.backButtonUrlHelp')"
             :disabled="!element.config.showBackButton.value"
         />
         {% endblock %}

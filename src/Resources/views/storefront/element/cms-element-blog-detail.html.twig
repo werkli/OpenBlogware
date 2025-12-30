@@ -11,9 +11,9 @@
                             {{ 'werkl-blog.detail.backButton.text'|trans }}
                         </a>
                     {% else %}
-                        <a href="javascript:history.back()" class="btn btn-secondary">
+                        <button type="button" class="btn btn-secondary" onclick="history.back()">
                             {{ 'werkl-blog.detail.backButton.text'|trans }}
-                        </a>
+                        </button>
                     {% endif %}
                 </div>
             {% endif %}

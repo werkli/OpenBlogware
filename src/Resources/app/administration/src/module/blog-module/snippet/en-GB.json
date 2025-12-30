@@ -153,7 +153,8 @@
                         "label": "Back to listing button",
                         "showBackButton": "Show \"Back to listing\" button",
                         "backButtonUrl": "Listing page URL",
-                        "backButtonUrlPlaceholder": "e.g. /blog - leave empty for browser history.back()"
+                        "backButtonUrlPlaceholder": "e.g. /blog - leave empty for browser history.back()",
+                        "backButtonUrlHelp": "Only available when the \"Back to listing\" button is enabled"
                     }
                 },
                 "component": {
