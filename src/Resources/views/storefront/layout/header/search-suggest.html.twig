@@ -13,10 +13,11 @@
         {% set blogTabHref = '#blog-tab-pane' %}
         {% set blogTabContent = 'blog-tab-pane' %}
 
-        <div class="search-suggest-container search-suggest-container-with-blog">
+        <ul class="search-suggest-container search-suggest-container-with-blog">
             {% block layout_search_suggest_results %}
                 {% if blogTotal %}
-                    <div class="row">
+                    <li class="search-suggest-tabs-wrapper">
+                        <div class="row">
                         <div class="col-md-3 col-12">
                             <ul class="nav nav-pills flex-md-column flex-row justify-content-around"
                                 role="tablist"
@@ -86,12 +87,13 @@
                                 {% block layout_search_suggest_results_tabs_content_others %}{% endblock %}
                             </div>
                         </div>
-                    </div>
+                        </div>
+                    </li>
                 {% else %}
                     {{ parent() }}
                 {% endif %}
             {% endblock %}
-        </div>
+        </ul>
     {% else %}
         {{ parent() }}
     {% endif %}
