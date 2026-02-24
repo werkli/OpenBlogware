@@ -386,7 +386,7 @@ class WerklOpenBlogware extends Plugin
     $existing = $repo->search($criteria, $context)->first();
 
     // Minimal funktionierendes Template (kein leerer String!)
-    $template = '{{ entry.translated.title }}';
+    $template = 'blog/{{ entry.translated.title }}';
 
     if ($existing === null) {
         $repo->create([[
