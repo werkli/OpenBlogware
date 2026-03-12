@@ -73,11 +73,12 @@ class BlogPageLoaderTest extends TestCase
         bool $hasCmsPage,
         ?string $exceptionClass,
         int $expectedDispatches,
-        array $metaInformation
+        array $metaInformation,
+        bool $isActive = true
     ): void {
         $request = new Request([], [], ['articleId' => $requestArticleId]);
 
-        $blogSearchResults = $this->createBlogSearchResult($hasBlogEntry, $requestArticleId, $metaInformation);
+        $blogSearchResults = $this->createBlogSearchResult($hasBlogEntry, $requestArticleId, $metaInformation, $isActive);
         $this->blogRepository->entitySearchResults = [$blogSearchResults];
 
         if ($detailCmsPageId) {
@@ -145,6 +146,16 @@ class BlogPageLoaderTest extends TestCase
                 1,
                 [],
             ],
+            'test the article is inactive and should return a 404' => [
+                'bl-100',
+                true,
+                null,
+                false,
+                PageNotFoundException::class,
+                1,
+                [],
+                false,
+            ],
             'test there is no configuration for the blog page' => [
                 'bl-100',
                 true,
@@ -186,7 +197,8 @@ class BlogPageLoaderTest extends TestCase
     private function createBlogSearchResult(
         bool $hasBlogEntry,
         ?string $articleId,
-        ?array $metaInformation
+        ?array $metaInformation,
+        bool $isActive = true
     ): ?EntitySearchResult {
         $searchResults = $this->createMock(EntitySearchResult::class);
 
@@ -197,6 +209,7 @@ class BlogPageLoaderTest extends TestCase
                 'getTeaser' => 'blog teaser',
                 'getMetaTitle' => $metaInformation['metaTitle'] ?? null,
                 'getMetaDescription' => $metaInformation['metaDescription'] ?? null,
+                'getActive' => $isActive,
                 'getBlogAuthor' => $this->createConfiguredMock(BlogAuthorEntity::class, [
                     'getFullName' => $metaInformation['metaAuthor'] ?? null,
                 ]),

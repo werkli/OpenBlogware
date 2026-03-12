@@ -105,6 +105,10 @@ class BlogPageLoader
             throw new PageNotFoundException($articleId);
         }
 
+        if (!$blogEntry->getActive()) {
+            throw new PageNotFoundException($articleId);
+        }
+
         return $blogEntry;
     }
 
