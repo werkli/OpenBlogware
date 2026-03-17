@@ -2,6 +2,9 @@ name: CI Pipeline
 
 on: [push]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
     eslint:
         name: ESLint
@@ -74,7 +77,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: ${{ matrix.php }}
+                  php-version: 8.3
 
             - name: Install Dependencies
               run: make dev -B
@@ -209,7 +212,4 @@ jobs:
     #           with:
     #               name: cypress_results_sw_v${{ matrix.shopware }}
     #               retention-days: 1
-    #               path: |
-    #                   tests/Cypress/cypress/logs
-    #                   tests/Cypress/cypress/videos
-    #                   tests/Cypress/cypress/screenshots
+    #               path: 
