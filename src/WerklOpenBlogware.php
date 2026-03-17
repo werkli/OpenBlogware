@@ -38,9 +38,9 @@ class WerklOpenBlogware extends Plugin
         parent::install($installContext);
 
         $this->createBlogMediaFolder($installContext->getContext());
-		
-		//  SEO Template sicherstellen (wichtig!)
-		$this->ensureSeoUrlTemplate($installContext->getContext());
+
+        //  SEO Template sicherstellen (wichtig!)
+        $this->ensureSeoUrlTemplate($installContext->getContext());
 
         $this->getLifeCycle()->install($installContext->getContext());
     }
@@ -97,8 +97,8 @@ class WerklOpenBlogware extends Plugin
     public function update(UpdateContext $updateContext): void
     {
         parent::update($updateContext);
-		
-		$this->ensureSeoUrlTemplate($updateContext->getContext());
+
+        $this->ensureSeoUrlTemplate($updateContext->getContext());
 
         (new Update())->update($this->container, $updateContext);
 
@@ -303,15 +303,15 @@ class WerklOpenBlogware extends Plugin
         $update = [];
         /** @var SeoUrlTemplateEntity $seoUrlTemplate */
         foreach ($seoUrlTemplates as $seoUrlTemplate) {
-		$tpl = (string) $seoUrlTemplate->getTemplate();
+            $tpl = (string) $seoUrlTemplate->getTemplate();
 
-		if (strpos($tpl, 'entry.translated') !== false) {
-			continue;
-		}
+            if (strpos($tpl, 'entry.translated') !== false) {
+                continue;
+            }
 
-		if (strpos($tpl, 'entry.title') === false) {
-			continue;
-		}
+            if (strpos($tpl, 'entry.title') === false) {
+                continue;
+            }
 
             $templateReplaced = str_replace('entry.title', 'entry.translated.title', $seoUrlTemplate->getTemplate());
             if (!\is_string($templateReplaced)) {
@@ -372,41 +372,42 @@ class WerklOpenBlogware extends Plugin
 
         return array_column($results, 'id');
     }
-	private function ensureSeoUrlTemplate(Context $context): void
-{
-    /** @var EntityRepository $repo */
-    $repo = $this->container->get('seo_url_template.repository');
 
-    $criteria = new Criteria();
-    $criteria->addFilter(new EqualsFilter('routeName', BlogSeoUrlRoute::ROUTE_NAME));
-    $criteria->addFilter(new EqualsFilter('entityName', BlogEntryDefinition::ENTITY_NAME));
-    $criteria->addFilter(new EqualsFilter('salesChannelId', null)); // Default Template
+    private function ensureSeoUrlTemplate(Context $context): void
+    {
+        /** @var EntityRepository $repo */
+        $repo = $this->container->get('seo_url_template.repository');
 
-    /** @var SeoUrlTemplateEntity|null $existing */
-    $existing = $repo->search($criteria, $context)->first();
+        $criteria = new Criteria();
+        $criteria->addFilter(new EqualsFilter('routeName', BlogSeoUrlRoute::ROUTE_NAME));
+        $criteria->addFilter(new EqualsFilter('entityName', BlogEntryDefinition::ENTITY_NAME));
+        $criteria->addFilter(new EqualsFilter('salesChannelId', null)); // Default Template
 
-    // Minimal funktionierendes Template (kein leerer String!)
-    $template = 'blog/{{ entry.translated.title }}';
+        /** @var SeoUrlTemplateEntity|null $existing */
+        $existing = $repo->search($criteria, $context)->first();
 
-    if ($existing === null) {
-        $repo->create([[
-            'id' => Uuid::randomHex(),
-            'routeName' => BlogSeoUrlRoute::ROUTE_NAME,
-            'entityName' => BlogEntryDefinition::ENTITY_NAME,
-            'template' => $template,
-            'isValid' => true,
-        ]], $context);
+        // Minimal funktionierendes Template (kein leerer String!)
+        $template = 'blog/{{ entry.translated.title }}';
 
-        return;
+        if ($existing === null) {
+            $repo->create([[
+                'id' => Uuid::randomHex(),
+                'routeName' => BlogSeoUrlRoute::ROUTE_NAME,
+                'entityName' => BlogEntryDefinition::ENTITY_NAME,
+                'template' => $template,
+                'isValid' => true,
+            ]], $context);
+
+            return;
+        }
+
+        // Falls Template existiert, aber leer/kaputt
+        if (!$existing->getTemplate()) {
+            $repo->update([[
+                'id' => $existing->getId(),
+                'template' => $template,
+                'isValid' => true,
+            ]], $context);
+        }
     }
-
-    // Falls Template existiert, aber leer/kaputt
-    if (!$existing->getTemplate()) {
-        $repo->update([[
-            'id' => $existing->getId(),
-            'template' => $template,
-            'isValid' => true,
-        ]], $context);
-    }
-}
 }
