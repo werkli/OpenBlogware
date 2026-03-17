@@ -303,13 +303,11 @@ class WerklOpenBlogware extends Plugin
         $update = [];
         /** @var SeoUrlTemplateEntity $seoUrlTemplate */
         foreach ($seoUrlTemplates as $seoUrlTemplate) {
-            $tpl = (string) $seoUrlTemplate->getTemplate();
-
-            if (strpos($tpl, 'entry.translated') !== false) {
+            if (str_contains($tpl, 'entry.translated')) {
                 continue;
             }
 
-            if (strpos($tpl, 'entry.title') === false) {
+            if (!str_contains($tpl, 'entry.title')) {
                 continue;
             }
 
