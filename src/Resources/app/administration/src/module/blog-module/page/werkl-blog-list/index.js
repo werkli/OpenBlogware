@@ -1,18 +1,22 @@
 import template from './werkl-blog-list.html.twig';
 import './werkl-blog-list.scss';
+import slugify from 'slugify';
 
 const { Mixin, Context } = Shopware;
 const Criteria = Shopware.Data.Criteria;
-const { cloneDeep } = Shopware.Utils.object;
 
 export default {
     template,
 
-    inject: ['repositoryFactory'],
+    inject: [
+        'repositoryFactory',
+        'systemConfigApiService',
+    ],
 
     mixins: [
         Mixin.getByName('salutation'),
         Mixin.getByName('listing'),
+        Mixin.getByName('notification'),
     ],
 
     data() {
@@ -117,126 +121,99 @@ export default {
             window.open('https://github.com/sponsors/7underlines', '_blank');
         },
 
+        onEdit(blogEntry) {
+            this.$router.push({ name: 'blog.module.detail', params: { id: blogEntry.id } });
+        },
+
+        async onDelete(blogEntry) {
+            if (!confirm(this.$tc('werkl-blog.list.confirmDelete', 0, { title: blogEntry.title }))) {
+                return;
+            }
+
+            this.isLoading = true;
+
+            try {
+                await this.blogEntryRepository.delete(blogEntry.id, Shopware.Context.api);
+
+                this.createNotificationSuccess({
+                    message: this.$tc('werkl-blog.list.notification.deleteSuccess', 0, {
+                        title: blogEntry.title,
+                    }),
+                });
+
+                await this.getList();
+            } catch (error) {
+                this.createNotificationError({
+                    message: this.$tc('werkl-blog.list.notification.deleteError'),
+                });
+                console.error('Error deleting blog entry:', error);
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
         async onDuplicate(blogEntry) {
             this.isLoading = true;
 
             try {
-                // Create criteria to load the full blog entry with all associations
+                // Load the blog entry with categories and tags
                 const criteria = new Criteria();
-                const sortCriteria = Criteria.sort('position', 'ASC', true);
+                criteria.addAssociation('blogCategories');
+                criteria.addAssociation('tags');
 
-                criteria
-                    .addAssociation('blogCategories')
-                    .addAssociation('tags')
-                    .addAssociation('blogAuthor')
-                    .getAssociation('cmsPage')
-                    .getAssociation('sections')
-                    .addSorting(sortCriteria)
-                    .addAssociation('backgroundMedia')
-                    .getAssociation('blocks')
-                    .addSorting(sortCriteria)
-                    .addAssociation('backgroundMedia')
-                    .addAssociation('slots');
-
-                // Load the full blog entry
                 const fullBlogEntry = await this.blogEntryRepository.get(
                     blogEntry.id,
                     Context.api,
                     criteria
                 );
 
-                // Create a new CMS page (deep copy of the original)
-                let newCmsPage = null;
-                if (fullBlogEntry.cmsPage) {
-                    newCmsPage = this.pageRepository.create();
-                    const originalPage = fullBlogEntry.cmsPage;
+                // Create a new blank CMS page for the duplicate
+                // CMS content (sections/blocks) cloning requires complex entity handling
+                // Use the built-in "Section duplicate" / "Block duplicate" in the CMS editor instead
+                const newPage = this.pageRepository.create();
+                newPage.name = `${fullBlogEntry.title} (Copy)`;
+                newPage.type = 'blog_detail';
+                newPage.sections = [];
 
-                    // Copy basic page properties
-                    newCmsPage.name = `${originalPage.name} (Copy)`;
-                    newCmsPage.type = originalPage.type;
-                    newCmsPage.locked = originalPage.locked;
-                    newCmsPage.config = cloneDeep(originalPage.config);
-
-                    // Deep copy sections - use cloneDeep and then assign new IDs
-                    if (originalPage.sections && originalPage.sections.length > 0) {
-                        const clonedSections = cloneDeep(originalPage.sections);
-                        newCmsPage.sections = clonedSections.map(section => {
-                            // Remove the ID so Shopware creates a new one
-                            delete section.id;
-                            delete section.cmsPageId;
-                            delete section.versionId;
-                            
-                            if (section.blocks) {
-                                section.blocks = section.blocks.map(block => {
-                                    delete block.id;
-                                    delete block.sectionId;
-                                    delete block.versionId;
-                                    
-                                    if (block.slots) {
-                                        block.slots = block.slots.map(slot => {
-                                            delete slot.id;
-                                            delete slot.blockId;
-                                            delete slot.versionId;
-                                            return slot;
-                                        });
-                                    }
-                                    
-                                    return block;
-                                });
-                            }
-                            
-                            return section;
-                        });
-                    }
-
-                    // Save the new CMS page first
-                    await this.pageRepository.save(newCmsPage, Context.api);
-                }
+                await this.pageRepository.save(newPage, Context.api);
 
                 // Create the new blog entry
                 const newBlogEntry = this.blogEntryRepository.create();
 
-                // Copy properties from original blog entry
                 newBlogEntry.title = `${fullBlogEntry.title} (Copy)`;
-                newBlogEntry.slug = null; // Will be auto-generated from title
+                newBlogEntry.slug = slugify(`${fullBlogEntry.title} (Copy)`, { lower: true });
                 newBlogEntry.teaser = fullBlogEntry.teaser;
                 newBlogEntry.metaTitle = fullBlogEntry.metaTitle;
                 newBlogEntry.metaDescription = fullBlogEntry.metaDescription;
                 newBlogEntry.authorId = fullBlogEntry.authorId;
-                newBlogEntry.publishedAt = null; // Set to null for inactive entry
-                newBlogEntry.active = false; // Set as inactive by default
+                newBlogEntry.publishedAt = null;
+                newBlogEntry.active = false;
                 newBlogEntry.detailTeaserImage = fullBlogEntry.detailTeaserImage;
                 newBlogEntry.mediaId = fullBlogEntry.mediaId;
-                newBlogEntry.cmsPageId = newCmsPage ? newCmsPage.id : null;
+                newBlogEntry.cmsPageId = newPage.id;
 
-                // Copy categories
                 if (fullBlogEntry.blogCategories && fullBlogEntry.blogCategories.length > 0) {
                     fullBlogEntry.blogCategories.forEach(category => {
                         newBlogEntry.blogCategories.add(category);
                     });
                 }
 
-                // Copy tags
                 if (fullBlogEntry.tags && fullBlogEntry.tags.length > 0) {
                     fullBlogEntry.tags.forEach(tag => {
                         newBlogEntry.tags.add(tag);
                     });
                 }
 
-                // Save the new blog entry
                 await this.blogEntryRepository.save(newBlogEntry, Context.api);
 
-                // Show success notification
                 this.createNotificationSuccess({
                     message: this.$tc('werkl-blog.list.notification.duplicateSuccess', 0, {
                         title: fullBlogEntry.title,
                     }),
                 });
 
-                // Refresh the list
                 await this.getList();
 
-                // Navigate to the duplicated entry
                 this.$router.push({
                     name: 'blog.module.detail',
                     params: { id: newBlogEntry.id },

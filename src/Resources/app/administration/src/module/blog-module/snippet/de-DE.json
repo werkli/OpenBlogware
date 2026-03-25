@@ -15,9 +15,14 @@
             "messageEmpty": "Keine Einträge vorhanden",
             "buttonDuplicate": "Duplizieren",
             "contextMenuDuplicate": "Duplizieren",
+            "contextMenuEdit": "Bearbeiten",
+            "contextMenuDelete": "Löschen",
+            "confirmDelete": "Möchtest du den Blog Eintrag \"{title}\" wirklich löschen?",
             "notification": {
                 "duplicateSuccess": "Blog Eintrag \"{title}\" wurde erfolgreich dupliziert.",
-                "duplicateError": "Fehler beim Duplizieren des Blog Eintrags."
+                "duplicateError": "Fehler beim Duplizieren des Blog Eintrags.",
+                "deleteSuccess": "Blog Eintrag \"{title}\" wurde erfolgreich gelöscht.",
+                "deleteError": "Fehler beim Löschen des Blog Eintrags."
             },
             "table": {
                 "title": "Titel",

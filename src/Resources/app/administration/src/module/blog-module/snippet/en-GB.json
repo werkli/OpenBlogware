@@ -15,9 +15,14 @@
             "messageEmpty": "No blog entries ...",
             "buttonDuplicate": "Duplicate",
             "contextMenuDuplicate": "Duplicate",
+            "contextMenuEdit": "Edit",
+            "contextMenuDelete": "Delete",
+            "confirmDelete": "Are you sure you want to delete the blog entry \"{title}\"?",
             "notification": {
                 "duplicateSuccess": "Blog entry \"{title}\" has been successfully duplicated.",
-                "duplicateError": "Error duplicating blog entry."
+                "duplicateError": "Error duplicating blog entry.",
+                "deleteSuccess": "Blog entry \"{title}\" has been successfully deleted.",
+                "deleteError": "Error deleting blog entry."
             },
             "table": {
                 "title": "Title",

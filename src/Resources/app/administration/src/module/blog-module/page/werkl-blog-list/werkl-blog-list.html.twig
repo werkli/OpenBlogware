@@ -109,9 +109,24 @@
 
             {% block werkl_blog_list_grid_actions %}
             <template #actions="{ item }">
+                {% block werkl_blog_list_grid_actions_edit %}
+                <sw-context-menu-item @click="onEdit(item)">
+                    {{ $tc('werkl-blog.list.contextMenuEdit') }}
+                </sw-context-menu-item>
+                {% endblock %}
+
                 {% block werkl_blog_list_grid_actions_duplicate %}
                 <sw-context-menu-item @click="onDuplicate(item)">
                     {{ $tc('werkl-blog.list.contextMenuDuplicate') }}
+                </sw-context-menu-item>
+                {% endblock %}
+
+                {% block werkl_blog_list_grid_actions_delete %}
+                <sw-context-menu-item
+                    variant="danger"
+                    @click="onDelete(item)"
+                >
+                    {{ $tc('werkl-blog.list.contextMenuDelete') }}
                 </sw-context-menu-item>
                 {% endblock %}
             </template>
