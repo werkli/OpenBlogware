@@ -1,3 +1,5 @@
+# 5.2.0
+
 # 5.1.3
 - Behoben: Inaktive Blog-Posts gaben HTTP 200 statt 404 zurück [#62](https://github.com/Werkstattl/OpenBlogware/issues/62)
 
