@@ -1,7 +1,7 @@
 # 5.2.0
 - Optimised blog config sidebar [#71](https://github.com/Werkstattl/OpenBlogware/pull/71)
-- Fixed adding blogs creating many shopping experiences [#72](https://github.com/Werkstattl/OpenBlogware/pull/72) [#38](https://github.com/Werkstattl/OpenBlogware/issues/38)
-- Fixed incorrect blog URLs in sales-channel-specific sitemaps [#73](https://github.com/Werkstattl/OpenBlogware/pull/73) [#68](https://github.com/Werkstattl/OpenBlogware/issues/68)
+- Fixed adding blogs creating many shopping experiences [#38](https://github.com/Werkstattl/OpenBlogware/issues/38)
+- Fixed incorrect blog URLs in sales-channel-specific sitemaps [#68](https://github.com/Werkstattl/OpenBlogware/issues/68)
 
 # 5.1.3
 - Fixed inactive blog posts returning HTTP 200 instead of 404 [#62](https://github.com/Werkstattl/OpenBlogware/issues/62)
